@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: torch-test
+  namespace: guru-research
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                  - perfsonar.csusb.edu
+  containers:
+  - name: demo
+    image: pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
+    command: ["/bin/bash"]
+    # /data/scripts/init.sh; 
+    args: 
+    - "-c"
+    - >- 
+      sleep infinity
+    volumeMounts:
+      - name: james-smart-vol
+        mountPath: /data_old
+      - name: james-shared
+        mountPath: /data
+      - name: dshm
+        mountPath: /dev/shm
+    resources:
+      limits:
+        memory: 12Gi
+        cpu: "2"
+        nvidia.com/gpu: "1"
+      requests:
+        memory: 12Gi
+        cpu: "2"
+        nvidia.com/gpu: "1"
+    env:
+      - name: PAT
+        value: $env:PAT
+  volumes:
+    - name: james-smart-vol
+      persistentVolumeClaim:
+        claimName: james-smart-vol
+    - name: james-shared
+      persistentVolumeClaim:
+        claimName: james-shared
+    - name: dshm
+      emptyDir:
+        medium: Memory
