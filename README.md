@@ -2,6 +2,8 @@
 
 James Zhao's ([jjz005@ucsd.edu](jjz005@ucsd.edu)) repo for all things kubernetes. For SMART4.0/[4.5](https://github.com/Cyoung02/smart4.5) 
 
+For any future developers who try to navigate Nautilus, here is a [tutorial](https://github.com/JamesZhao01/nautilus-tutorial). 
+
 ---
 
 Use the ```apply.ps1``` script to apply a system environment variable and replace any instance of ```$env:PAT$``` with the equivalent environment variable on powershell. 
