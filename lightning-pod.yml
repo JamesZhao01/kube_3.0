@@ -23,7 +23,7 @@ spec:
     - >- 
       cd /workspace &&
       git clone https://jameszhao01:${PAT}@github.com/Cyoung02/smart4.5.git &&
-      chmod u+x -R /workspace/smart4.5/scripts &&
+      git clone https://jameszhao01:${PAT}@github.com/JamesZhao01/smartinspector_3.0.git &&
       sleep infinity
     volumeMounts:
       - name: james-smart-vol
@@ -43,11 +43,7 @@ spec:
         nvidia.com/gpu: "1"
     env:
       - name: PAT
-        valueFrom:
-          secretKeyRef:
-            name: jz-secret
-            key: pat
-            optional: false
+        value: $env:PAT
   volumes:
     - name: james-smart-vol
       persistentVolumeClaim:
