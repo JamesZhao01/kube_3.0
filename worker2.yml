@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: j-job-worker-2
+  namespace: guru-research
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values:
+                      - perfsonar.csusb.edu
+                      - prp-gpu-3.t2.ucsd.edu
+      containers:
+        - name: demo
+          image: cyoung02/smart:latest
+          command: ["/bin/bash"]
+          args:
+            - "-c"
+            - >-
+              cd /workspace &&
+              git clone https://jameszhao01:${PAT}@github.com/Cyoung02/smart4.5.git &&
+              cd /workspace/smart4.5 &&
+              scripts/install_libs.sh &&
+              scripts/pull_dataset.sh SMILES_dataset && 
+              scripts/pull_dataset.sh SMILES_ranking_sets &&
+              scripts/worker.sh
+          volumeMounts:
+            - name: james-shared
+              mountPath: /data
+            - name: dshm
+              mountPath: /dev/shm
+          resources:
+            limits:
+              memory: 16Gi
+              cpu: "4"
+              nvidia.com/gpu: "1"
+            requests:
+              memory: 16Gi
+              cpu: "4"
+              nvidia.com/gpu: "1"
+          env:
+            - name: PAT
+              value: $env:PAT
+      volumes:
+        - name: james-shared
+          persistentVolumeClaim:
+            claimName: james-shared
+        - name: dshm
+          emptyDir:
+            medium: Memory
+      restartPolicy: Never
+  backoffLimit: 0
