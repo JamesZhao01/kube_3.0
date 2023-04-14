@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: j-pod-lightning
+  name: j-pod-smart
   namespace: guru-research
 spec:
   affinity:
@@ -16,7 +16,7 @@ spec:
                   - ry-gpu-14.sdsc.optiputer.net
   containers:
     - name: demo
-      image: cyoung02/smart:latest
+      image: jamesjzhao01/smart:latest
       command: ["/bin/bash"]
       # /data/scripts/init.sh;
       args:
