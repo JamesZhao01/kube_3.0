@@ -22,10 +22,11 @@ spec:
       args:
         - "-c"
         - >-
-          cd /workspace &&
-          git clone https://jameszhao01:${PAT}@github.com/Cyoung02/smart4.5.git &&
-          git clone https://jameszhao01:${PAT}@github.com/JamesZhao01/smartinspector_3.0.git &&
-          sleep infinity
+          cd /workspace && git clone
+          https://jameszhao01:${PAT}@github.com/Cyoung02/smart4.5.git && git
+          clone
+          https://jameszhao01:${PAT}@github.com/JamesZhao01/smartinspector_3.0.git
+          && sleep infinity
       volumeMounts:
         - name: james-smart-vol
           mountPath: /data_old

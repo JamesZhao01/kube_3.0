@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: j-job-worker-3
+  name: j-autoworker-$i
   namespace: guru-research
 spec:
   template:
@@ -18,18 +18,17 @@ spec:
                       - prp-gpu-3.t2.ucsd.edu
       containers:
         - name: demo
-          image: cyoung02/smart:latest
+          image: jamesjzhao01/smart:latest
           command: ["/bin/bash"]
           args:
             - "-c"
             - >-
-              cd /workspace &&
-              git clone https://jameszhao01:${PAT}@github.com/Cyoung02/smart4.5.git &&
-              cd /workspace/smart4.5 &&
-              scripts/install_libs.sh &&
-              scripts/pull_dataset.sh SMILES_dataset && 
+              cd /workspace && git clone
+              https://jameszhao01:$${PAT}@github.com/Cyoung02/smart4.5.git && cd
+              /workspace/smart4.5 && scripts/pull_dataset.sh SMILES_dataset &&
               scripts/pull_dataset.sh SMILES_ranking_sets &&
-              scripts/worker.sh
+              scripts/pull_chemformer.sh && scripts/worker.sh && python
+              train_concise.py --config $config
           volumeMounts:
             - name: james-shared
               mountPath: /data
@@ -38,15 +37,15 @@ spec:
           resources:
             limits:
               memory: 16Gi
-              cpu: "4"
+              cpu: "12"
               nvidia.com/gpu: "1"
             requests:
               memory: 16Gi
-              cpu: "4"
+              cpu: "12"
               nvidia.com/gpu: "1"
           env:
             - name: PAT
-              value: $env:PAT
+              value: $pat
       volumes:
         - name: james-shared
           persistentVolumeClaim:
