@@ -28,8 +28,6 @@ spec:
           https://jameszhao01:${PAT}@github.com/JamesZhao01/smartinspector_3.0.git
           && sleep infinity
       volumeMounts:
-        - name: james-smart-vol
-          mountPath: /data_old
         - name: james-shared
           mountPath: /data
         - name: dshm
@@ -47,9 +45,6 @@ spec:
         - name: PAT
           value: $env:PAT
   volumes:
-    - name: james-smart-vol
-      persistentVolumeClaim:
-        claimName: james-smart-vol
     - name: james-shared
       persistentVolumeClaim:
         claimName: james-shared

@@ -27,8 +27,8 @@ spec:
               https://jameszhao01:$${PAT}@github.com/Cyoung02/smart4.5.git && cd
               /workspace/smart4.5 && scripts/pull_dataset.sh SMILES_dataset &&
               scripts/pull_dataset.sh SMILES_ranking_sets &&
-              scripts/pull_chemformer.sh && scripts/worker.sh && python
-              train_concise.py --config $config
+              scripts/pull_chemformer.sh && python train_concise.py --config
+              $config
           volumeMounts:
             - name: james-shared
               mountPath: /data
